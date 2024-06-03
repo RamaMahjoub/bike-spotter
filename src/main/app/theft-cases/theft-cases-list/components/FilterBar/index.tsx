@@ -5,25 +5,26 @@ import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
 import useFetchTheftCases from 'main/app/theft-cases/hooks/useFetchTheftCases'
 import {
+    selectEndDateInRange,
+    selectStartDateInRange,
     selectTitleQuery,
+    setDateRange,
     setTitleSearch
 } from 'main/app/theft-cases/store/theftCasesSlice'
 import { useAppDispatch, useAppSelector } from 'main/store/index'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent } from 'react'
 import DatePicker from 'react-datepicker'
 
 const FilterBar = () => {
     const dispatch = useAppDispatch()
     const titleQuery = useAppSelector(selectTitleQuery)
     const fetchTheftCases = useFetchTheftCases(1)
-    const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
-        new Date(),
-        new Date()
-    ])
-    const [startDate, endDate] = dateRange
+    const startDate = useAppSelector(selectStartDateInRange)
+    const endDate = useAppSelector(selectEndDateInRange)
     const handleTitleQueryChange = (event: ChangeEvent<HTMLInputElement>) => {
         dispatch(setTitleSearch(event.target.value))
     }
+
     return (
         <DatePickerWrapper>
             <Grid
@@ -39,18 +40,14 @@ const FilterBar = () => {
                     <DatePicker
                         withPortal
                         autoComplete="off"
-                        customInput={
-                            <TextField
-                                fullWidth
-                                placeholder="search bike"
-                            />
-                        }
+                        customInput={<TextField fullWidth />}
                         dateFormat="d/MM/YYYY"
-                        endDate={endDate}
+                        endDate={endDate ? new Date(endDate) : null}
+                        placeholderText="Filter this page by range"
                         selectsRange={true}
-                        startDate={startDate}
+                        startDate={startDate ? new Date(startDate) : null}
                         onChange={(update) => {
-                            setDateRange(update)
+                            dispatch(setDateRange(update))
                         }}
                     />
                 </Grid>
