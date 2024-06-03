@@ -2,7 +2,10 @@ const List = {
     MuiList: {
         styleOverrides: {
             root: () => ({
-                margin: 'auto'
+                display: 'flex',
+                flexDirection: 'column',
+                placeItems: 'center',
+                width: '100%'
             })
         }
     }
