@@ -5,17 +5,26 @@ interface Props {
     title: string
 }
 
-const Wrapper = styled('div')(() => ({
+const Wrapper = styled('div')(({theme}) => ({
     display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: theme.spacing(2),
     flex: '1 1 0%',
     width: '100%'
+}))
+
+const Logo = styled('img')(() => ({
+    height: 48,
+    width: 48
 }))
 
 const PageHeader = ({ title }: Props) => {
     return (
         <Wrapper>
+            <Logo 
+                alt='logo'
+                src='/bike.png'
+            />
             <Typography
                 color="primary"
                 variant="h1"
