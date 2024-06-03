@@ -5,4 +5,5 @@ export type TheftCaseItem = {
     date_stolen: number
     stolen_location: string
     thumb: string | null
+    report_date: number
 }
