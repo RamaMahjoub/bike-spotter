@@ -14,6 +14,10 @@ const createReducer = (asyncReducers: ReducersMapObject) =>
 
 const store = configureStore({
     reducer: createReducer({}),
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: false
+        }),
     devTools: process.env.NODE_ENV === 'development'
 })
 
