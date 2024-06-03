@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography'
 import { TheftCaseItem } from 'main/app/theft-cases/types/responses/TheftCaseItem'
 import {
     InfoWrapper,
+    StackItem,
     StyledAvatar,
     StyledListItem,
     StyledListItemAvatr
@@ -40,9 +41,9 @@ const CaseItem = ({ caseItem }: Props) => {
                             orientation="vertical"
                         />
                     }
-                    spacing={1}
+                    flexWrap='wrap'
                 >
-                    <>
+                    <StackItem>
                         <CalendarTodayIcon
                             color="secondary"
                             fontSize="small"
@@ -56,8 +57,23 @@ const CaseItem = ({ caseItem }: Props) => {
                         <Typography variant="body2">
                             {dateFormat(caseItem.date_stolen)}
                         </Typography>
-                    </>
-                    <>
+                    </StackItem>
+                    <StackItem>
+                        <CalendarTodayIcon
+                            color="secondary"
+                            fontSize="small"
+                        />
+                        <Typography
+                            color="secondary"
+                            variant="body2"
+                        >
+                            Reported At
+                        </Typography>
+                        <Typography variant="body2">
+                            {dateFormat(caseItem.report_date)}
+                        </Typography>
+                    </StackItem>
+                    <StackItem>
                         <LocationOnIcon
                             color="secondary"
                             fontSize="small"
@@ -65,7 +81,7 @@ const CaseItem = ({ caseItem }: Props) => {
                         <Typography variant="body2">
                             {caseItem.stolen_location}
                         </Typography>
-                    </>
+                    </StackItem>
                 </Stack>
                 <Typography variant="body1">{caseItem.description}</Typography>
             </InfoWrapper>
