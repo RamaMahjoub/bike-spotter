@@ -1,11 +1,11 @@
-import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
 import { APICore } from '@api/api/apiCore'
+import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
 import { AsyncStateType, RootState, StatusType } from 'main/store/types'
 import { LIMIT } from 'main/types/PaginationLimit'
 import { TheftCasesServiceConfig } from '../services/config'
+import { TheftCaseItem } from '../types/responses/TheftCaseItem'
 import { TheftCasesCount } from '../types/responses/TheftCasesCount'
 import { TheftCasesList } from '../types/responses/TheftCasesList'
-import { TheftCaseItem } from '../types/responses/TheftCaseItem'
 
 const api = new APICore()
 
@@ -40,9 +40,8 @@ export const getTeftCasesDetails = createAsyncThunk(
                 {}
             )
             return response.data.bike.stolen_record.created_at
-        } catch (e) {
-            rejectWithValue(e)
-            console.log('erorr')
+        } catch (e: any) {
+            return rejectWithValue(e.response.data.error)
         }
     }
 )
@@ -61,9 +60,8 @@ export const getTeftCasesCount = createAsyncThunk(
                 queryParams
             )
             return response.data.proximity
-        } catch (e) {
-            rejectWithValue(e)
-            console.log('erorr')
+        } catch (e: any) {
+            return rejectWithValue(e.response.data.error)
         }
     }
 )
@@ -94,20 +92,18 @@ export const getAllCases = createAsyncThunk(
                 async (bike: TheftCaseItem) => {
                     const details = await dispatch(
                         getTeftCasesDetails({ id: bike.id })
-                    )
+                    ).unwrap()
                     return {
                         ...bike,
-                        report_date: details.payload
+                        report_date: details
                     }
                 }
             )
-
             const detailedBikes = await Promise.all(bikeDetailsPromises)
-            await dispatch(getTeftCasesCount({ query: titleQuery }))
+            await dispatch(getTeftCasesCount({ query: titleQuery })).unwrap()
             return detailedBikes
-        } catch (e) {
-            rejectWithValue(e)
-            console.log('erorr')
+        } catch (e: any) {
+            return rejectWithValue(e.response.data.error)
         }
     }
 )
@@ -138,8 +134,9 @@ export const teftCasesSlice = createSlice({
                 state.allCases.status = 'succeeded'
                 state.allCases.data = action.payload ?? []
             })
-            .addCase(getAllCases.rejected, (state) => {
+            .addCase(getAllCases.rejected, (state, action) => {
                 state.allCases.status = 'failed'
+                state.allCases.error = action.payload ?? ''
             })
             .addCase(getTeftCasesCount.fulfilled, (state, action) => {
                 state.theftCasesCount.status = 'succeeded'
@@ -155,6 +152,9 @@ export const selectAllCasesData = (state: RootState) =>
 
 export const selectAllCasesStatus = (state: RootState): StatusType =>
     state.theftCases.theftCasesSlice.allCases.status
+
+export const selectAllCasesError = (state: RootState) =>
+    state.theftCases.theftCasesSlice.allCases.error
 
 export const selectCasesCount = (state: RootState) =>
     state.theftCases.theftCasesSlice.theftCasesCount.data

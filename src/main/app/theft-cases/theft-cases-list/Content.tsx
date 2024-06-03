@@ -2,11 +2,13 @@ import { usePagination } from '@core/hooks'
 import CircularProgress from '@mui/material/CircularProgress'
 import List from '@mui/material/List'
 import Stack from '@mui/material/Stack'
+import Typography from '@mui/material/Typography'
 import { useAppSelector } from 'main/store/index'
 import { useCallback, useEffect } from 'react'
 import PaginationComponent from '../../components/Pagination'
 import useFetchTheftCases from '../hooks/useFetchTheftCases'
 import {
+    selectAllCasesError,
     selectAllCasesStatus,
     selectCasesCount,
     selectFilteredCases
@@ -20,6 +22,7 @@ const Content = () => {
     const total = useAppSelector(selectCasesCount)
     const fetchTheftCases = useFetchTheftCases(page)
     const cases = useAppSelector(selectFilteredCases)
+    const error = useAppSelector(selectAllCasesError)
     const fetchTheftCasesStatus = useAppSelector(selectAllCasesStatus)
 
     useEffect(() => {
@@ -46,10 +49,15 @@ const Content = () => {
                     />
                 ) : fetchTheftCasesStatus === 'idle' ? (
                     []
+                ) : fetchTheftCasesStatus === 'failed' ? (
+                    <Typography
+                        color="secondary"
+                        variant="h3"
+                    >
+                        {error}
+                    </Typography>
                 ) : (
-                    cases.map((bike: TheftCaseItem) =>
-                        renderCaseItem(bike)
-                    )
+                    cases.map((bike: TheftCaseItem) => renderCaseItem(bike))
                 )}
             </List>
             <PaginationComponent
