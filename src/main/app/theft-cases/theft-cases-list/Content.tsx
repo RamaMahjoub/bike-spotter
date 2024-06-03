@@ -7,9 +7,9 @@ import { useCallback, useEffect } from 'react'
 import PaginationComponent from '../../components/Pagination'
 import useFetchTheftCases from '../hooks/useFetchTheftCases'
 import {
-    selectAllCasesData,
     selectAllCasesStatus,
-    selectCasesCount
+    selectCasesCount,
+    selectFilteredCases
 } from '../store/theftCasesSlice'
 import { TheftCaseItem } from '../types/responses/TheftCaseItem'
 import CaseItem from './components/CaseItem'
@@ -19,7 +19,7 @@ const Content = () => {
     const { page, handlePageChange } = usePagination()
     const total = useAppSelector(selectCasesCount)
     const fetchTheftCases = useFetchTheftCases(page)
-    const cases = useAppSelector(selectAllCasesData)
+    const cases = useAppSelector(selectFilteredCases)
     const fetchTheftCasesStatus = useAppSelector(selectAllCasesStatus)
 
     useEffect(() => {
@@ -47,7 +47,7 @@ const Content = () => {
                 ) : fetchTheftCasesStatus === 'idle' ? (
                     []
                 ) : (
-                    cases.bikes.map((bike: TheftCaseItem) =>
+                    cases.map((bike: TheftCaseItem) =>
                         renderCaseItem(bike)
                     )
                 )}
