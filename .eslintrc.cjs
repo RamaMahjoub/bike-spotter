@@ -47,5 +47,6 @@ module.exports = {
     "react/jsx-no-useless-fragment": "error",
     "react/jsx-fragments": ["error", "syntax"],
     "react/no-array-index-key": "error",
+    "@typescript-eslint/no-explicit-any": "off"
   },
 }
