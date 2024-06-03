@@ -16,7 +16,7 @@ export const StyledListItem = styled(ListItem)<ListItemProps>(({ theme }) => ({
         borderBottomRightRadius: theme.spacing(1)
     },
     alignItems: 'stretch',
-    padding: 24,
+    padding: theme.spacing(3),
     transition: 'all 0.2s',
     borderBottom: `1px solid ${theme.palette.divider}`,
     [theme.breakpoints.down('md')]: {
@@ -41,18 +41,30 @@ export const StyledAvatar = styled(Avatar)<AvatarProps>(({ theme }) => ({
 export const StyledListItemAvatr = styled(ListItemAvatar)<ListItemAvatarProps>(
     ({ theme }) => ({
         width: 220,
-        marginTop: 0,
-        marginRight: 16,
+        marginTop: theme.spacing(0),
+        marginRight: theme.spacing(2),
         [theme.breakpoints.down('md')]: {
             width: '100%',
-            marginRight: 0,
-            marginBottom: 16
+            marginRight: theme.spacing(0),
+            marginBottom: theme.spacing(2),
         }
     })
 )
 
 export const InfoWrapper = styled(Box)<BoxProps>(() => ({
+    width: 'inherit',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
+    gap: 8
+}))
+
+export const StackItem = styled('div')(({ theme }) => ({
+    display: 'flex',
+    placeContent: 'center',
+    gap: 4,
+    margin: theme.spacing(0, 1),
+    [theme.breakpoints.down('sm')]: {
+        margin: theme.spacing(1),
+    }
 }))
