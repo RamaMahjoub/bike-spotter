@@ -45,7 +45,7 @@ const DatePickerWrapper = styled(Box)<BoxProps>(({ theme }) => {
                 }
             },
             '& > .react-datepicker__navigation': {
-                top: 12,
+                top: 30,
                 borderRadius: '50%',
                 backgroundColor: theme.palette.action.selected,
                 '&.react-datepicker__navigation--previous': {
